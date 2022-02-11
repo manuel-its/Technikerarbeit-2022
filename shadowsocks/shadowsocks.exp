@@ -1,0 +1,18 @@
+#!/usr/bin/expect -f
+
+set timeout -1
+spawn /usr/local/vpnserver/vpncmd
+
+expect "Management of VPN Server or VPN Bridge"
+send -- "1\r"
+
+expect "Hostname of IP Address of Destination: "
+send -- "localhost:5555\r"
+
+expect "Specify Virtual Hub Name: "
+send -- "\r"
+
+#expect "Specify Virtual Hub Name: "
+#send -- "\r"
+
+expect eof
