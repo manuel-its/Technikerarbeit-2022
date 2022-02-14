@@ -1,4 +1,6 @@
 ##!/bin/bash
+# link https://raw.githubusercontent.com/manuel-its/Technikerarbeit-2022/main/openvpn/openvpn.sh?token=GHSAT0AAAAAABRB2ABRMF2KUIZYI2PVKEFWYQTJ6DQ
+# http://www.softether-download.com/files/softether/v4.38-9760-rtm-2021.08.17-tree/Linux/SoftEther_VPN_Server/64bit_-_Intel_x64_or_AMD64/softether-vpnserver-v4.38-9760-rtm-2021.08.17-linux-x64-64bit.tar.gz
 # Installiere VPN
 apt-get update && apt-get upgrade -y
 sudo apt-get install build-essential wget -y
@@ -10,7 +12,8 @@ tar xzvf softether*
 cd vpnserver && make
 cd .. && mv vpnserver /usr/local 
 cd /usr/local/vpnserver/
-chmod 600 * chmod 700 vpnserver 
+chmod 600 * 
+chmod 700 vpnserver 
 chmod 700 vpncmd
 wget https://raw.githubusercontent.com/manuel-its/Technikerarbeit-2022/main/openvpn/vpnserver?token=GHSAT0AAAAAABRB2ABR3GCQKETBTA66LYE6YQTJYJA
 cp vpnserver?token=GHSAT0AAAAAABRB2ABR3GCQKETBTA66LYE6YQTJYJA /etc/init.d/vpnserver
@@ -29,7 +32,7 @@ UserPasswordSet $username
 IPsecEnable
 yes
 ServerCertRegenerate ip/domain
-ServerCertGet ~/cert.cer 
-OpenVpnEnable yes /PORTS:1194 
-OpenVpnMakeConfig ~/openvpn_config.zip 
-ufw allow 500/udp && ufw allow 4500/udp && ufw allow 1194/udp 
+ServerCertGet ~/cert.cer
+OpenVpnEnable yes /PORTS:1194
+OpenVpnMakeConfig ~/openvpn_config.zip
+ufw allow 500/udp && ufw allow 4500/udp && ufw allow 1194/udp
