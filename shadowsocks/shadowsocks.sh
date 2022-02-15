@@ -7,7 +7,6 @@ echo "2 User hinzufügen(Multiuser einrichten)"
 echo "3 Multiuser deaktivieren"
 echo "4 Shadowsocks entfernen"
 read auswahl
-
 case $auswahl in
    1)   
 apt-get update && apt-get upgrade -y
@@ -20,10 +19,8 @@ echo "Bitte Server Passwort für Shadowsocks eingegen: "
 read password
 $password
 sed '/password/ s/" "/"'$password'"/p' /etc/shadowsocks-libev/config.json
-systemctl restart shadowsocks-libev
-   ;;
-   2)   
-echo "Wie viele User sollen erstellt werden?"
+systemctl restart shadowsocks-libev ;;
+   2) echo "Wie viele User sollen erstellt werden?"
 read anzahluser
 for ((n=1;n<=anzahluser;n++))
 do
@@ -33,11 +30,8 @@ forpassword=$(openssl rand -base64 32)
 echo $forpassword
 sed '/password/ s/" "/"'$forpassword'"/p' /etc/shadowsocks-libev/config$n.json
 systemctl enable shadowsocks-libev-server@user$n.service –now
-done
-;;
-   3)   
-
-anzahl=$(find /etc/shadowsocks-libev/ -type f | wc -l)
+done ;;
+   3) anzahl=$(find /etc/shadowsocks-libev/ -type f | wc -l)
 if $anzahl>=2
 then
    anzahl=anzahl-1
@@ -46,8 +40,6 @@ then
    systemctl disable shadowsocks-libev-server@user$n.service –now
    rm /etc/shadowsocks-libev/config$n.json
    done
-fi
-
-   ;;		  
+fi ;;		  
 esac
 

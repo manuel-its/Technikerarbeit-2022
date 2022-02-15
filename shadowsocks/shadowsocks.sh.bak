@@ -1,5 +1,6 @@
 ##!/bin/bash
 #Shadowsocks
+#SQL Abfrage nach Benutzername E-Mail und Passwort
 echo "Eingabe Zahl:"
 echo "1 Shadowsocks Installieren"
 echo "2 User hinzufügen(Multiuser einrichten)"
