@@ -3,7 +3,7 @@
 echo "Eingabe Zahl:"
 echo "1 Shadowsocks Installieren"
 echo "2 User hinzufügen(Multiuser einrichten)"
-echo "3 User löschen"
+echo "3 Multiuser deaktivieren"
 echo "4 Shadowsocks entfernen"
 read auswahl
 
@@ -35,16 +35,18 @@ systemctl enable shadowsocks-libev-server@user$n.service –now
 done
 ;;
    3)   
-echo "Wie viele User sollen gelöscht werden?"
-read anzahluser
-for ((n=1;n<=anzahluser;n++))
-do
-systemctl disable shadowsocks-libev-server@user$n.service –now
-rm /etc/shadowsocks-libev/config$n.json
-done
-   ;;
-#   4)   kommando
-#              ...
-#              kommando ;;		  
+
+anzahl=$(find /etc/shadowsocks-libev/ -type f | wc -l)
+if $anzahl>=2
+then
+   anzahl=anzahl-1
+   for ((n=1;n<=anzahl;n++))
+   do
+   systemctl disable shadowsocks-libev-server@user$n.service –now
+   rm /etc/shadowsocks-libev/config$n.json
+   done
+fi
+
+   ;;		  
 esac
 

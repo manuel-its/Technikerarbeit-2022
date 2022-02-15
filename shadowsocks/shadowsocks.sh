@@ -1,5 +1,6 @@
 ##!/bin/bash
 #Shadowsocks
+#SQL Abfrage nach Benutzername E-Mail und Passwort
 echo "Eingabe Zahl:"
 echo "1 Shadowsocks Installieren"
 echo "2 User hinzufügen(Multiuser einrichten)"
@@ -39,8 +40,8 @@ done
 anzahl=$(find /etc/shadowsocks-libev/ -type f | wc -l)
 if $anzahl>=2
 then
-   berechnung=anzahl-1
-   for ((n=1;n<=berechnung;n++))
+   anzahl=anzahl-1
+   for ((n=1;n<=anzahl;n++))
    do
    systemctl disable shadowsocks-libev-server@user$n.service –now
    rm /etc/shadowsocks-libev/config$n.json
