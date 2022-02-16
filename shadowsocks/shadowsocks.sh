@@ -17,7 +17,6 @@ wget https://raw.githubusercontent.com/manuel-its/Technikerarbeit-2022/main/shad
 mv -f config.json?token=GHSAT0AAAAAABRB2ABQBKKL57QNYPYEGWWQYQRBW4A /etc/shadowsocks-libev/config.json
 echo "Bitte Server Passwort für Shadowsocks eingegen: "
 read password
-$password
 sed '/password/ s/" "/"'$password'"/p' /etc/shadowsocks-libev/config.json
 systemctl restart shadowsocks-libev ;;
    2) echo "Wie viele User sollen erstellt werden?"
