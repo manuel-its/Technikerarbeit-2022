@@ -18,7 +18,7 @@ wget https://raw.githubusercontent.com/manuel-its/Technikerarbeit-2022/main/shad
 mv -f config.json?token=GHSAT0AAAAAABRB2ABQBKKL57QNYPYEGWWQYQRBW4A /etc/shadowsocks-libev/config.json
 echo "Bitte Server Passwort für Shadowsocks eingegen: "
 read password
-sed '/password/ s/" "/"'$password'"/p' /etc/shadowsocks-libev/config.json
+sed -i 's/"password":" ",/"password":"'$password'",/g' /etc/shadowsocks-libev/config.json
 systemctl restart shadowsocks-libev ;;
    2) echo "Wie viele User sollen erstellt werden?"
 read anzahluser
@@ -28,7 +28,7 @@ wget https://raw.githubusercontent.com/manuel-its/Technikerarbeit-2022/main/shad
 mv config.json?token=GHSAT0AAAAAABRB2ABQJ4BU7HBRQSZ53OXUYQUW44A /etc/shadowsocks-libev/user$n
 forpassword=$(openssl rand -base64 32)
 echo $forpassword
-sed '/password/ s/" "/"'$forpassword'"/p' /etc/shadowsocks-libev/config$n.json
+sed -i 's/"password":" ",/"password":"'$forpassword'",/g' /etc/shadowsocks-libev/config$n.json
 systemctl enable shadowsocks-libev-server@user$n.service –now
 done ;;
    3) anzahl=$(find /etc/shadowsocks-libev/ -type f | wc -l)
@@ -42,4 +42,3 @@ then
    done
 fi ;;		  
 esac
-
