@@ -16,12 +16,13 @@ chmod 600 *
 chmod 700 vpnserver 
 chmod 700 vpncmd
 wget https://raw.githubusercontent.com/manuel-its/Technikerarbeit-2022/main/openvpn/vpnserver?token=GHSAT0AAAAAABRB2ABR3GCQKETBTA66LYE6YQTJYJA
-cp vpnserver?token=GHSAT0AAAAAABRB2ABR3GCQKETBTA66LYE6YQTJYJA /etc/init.d/vpnserver
+mv vpnserver?token=GHSAT0AAAAAABRB2ABR3GCQKETBTA66LYE6YQTJYJA /etc/init.d/vpnserver
 mkdir /var/lock/subsys 
 chmod 755 /etc/init.d/vpnserver && /etc/init.d/vpnserver start 
 update-rc.d vpnserver defaults 
-./vpncmd in /usr/local/vpnserver
+./vpncmd
 ServerPasswordSet 
+1
 HubCreate myhub 
 Hub myhub 
 SecureNatEnable 
@@ -31,7 +32,7 @@ UserCreate $username
 UserPasswordSet $username 
 IPsecEnable
 yes
-ServerCertRegenerate ip/domain
+ServerCertRegenerate 77.68.35.36
 ServerCertGet ~/cert.cer
 OpenVpnEnable yes /PORTS:1194
 OpenVpnMakeConfig ~/openvpn_config.zip
