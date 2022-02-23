@@ -1,0 +1,7 @@
+#!/usr/bin/expect
+
+set timeout -1
+spawn mysql_secure_installation
+expect "Enter current password for root (enter for none): "
+send '\r'
+expect eof
