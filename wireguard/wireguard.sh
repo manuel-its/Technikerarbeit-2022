@@ -1,5 +1,4 @@
 #!/bin/sh
-sh -c "echo 'deb http://deb.debian.org/debian buster-backports main contrib non-free' > /etc/apt/sources.list.d/buster-backports.list"
 apt update
 apt install wireguard fail2ban ufw htop
 cd /etc/wireguard
