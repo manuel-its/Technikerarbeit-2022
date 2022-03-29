@@ -13,7 +13,6 @@ chmod 700 vpnserver
 chmod 700 vpncmd
 wget https://raw.githubusercontent.com/manuel-its/Technikerarbeit-2022/main/openvpn/vpnserver
 mv vpnserver /etc/init.d/vpnserver
-#mkdir /var/lock/subsys
 chmod 755 /etc/init.d/vpnserver
 /etc/init.d/vpnserver start
 update-rc.d vpnserver defaults
