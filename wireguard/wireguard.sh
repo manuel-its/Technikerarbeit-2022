@@ -4,28 +4,22 @@ apt install wireguard fail2ban ufw htop
 cd /etc/wireguard
 umask 077
 wg genkey | tee privatekey | wg pubkey > publickey
-cat privatekey | read serverpriv
-cat publickey | read serverpub
+cat privatekey | read serverprivate
+cat publickey | read serverpublic
 mkdir /etc/wireguard/tmp
 cd /etc/wireguard/tmp
 wg genkey | tee privatekey | wg pubkey > publickey
-cat privatekey | read clientpriv
-cat publickey | read clientpub
+cat privatekey | read clientprivate
+cat publickey | read clientpublic
 cd /etc/wireguard/
-sed -i '/net.ipv4.ip_forward=1/s/^#//g' /etc/sysctl.conf
+rm wg0.conf
 wget https://raw.githubusercontent.com/manuel-its/Technikerarbeit2022/main/wireguard/wg0.conf
+sed -i 's/Server Private Key/'$serverprivate'/' wg0.conf
+sed -i 's/Client Public Key/'$clientpublic'/' wg0.conf
+sed -i 's/#net.ipv4.ip_forward=1/net.ipv4.ip_forward=1/' /etc/sysctl.conf
 systemctl enable wg-quick@wg0
-sudo ufw allow ssh
-sudo ufw allow 51820/udp
-sudo ufw allow 443/udp
-sudo ufw allow 80/udp
-sudo ufw allow 80/tcp
-sudo ufw allow 443/tcp
-sudo ufw enable
-#iptables -I FORWARD -i wg0 -o wg0 -j ACCEPT
-#sudo ufw allow in on wg0 to any
-#sudo ufw allow out on wg0 to any
-sudo cp /etc/fail2ban/jail.conf /etc/fail2ban/jail.local
-nano /etc/fail2ban/jail.local
-sudo systemctl restart fail2ban.service
-sudo systemctl enable fail2ban.service
+wget https://raw.githubusercontent.com/manuel-its/Technikerarbeit-2022/main/wireguard/client.conf
+sed -i 's/Client Private Key/'$clientprivate'/' wg0.conf
+sed -i 's/Server Public Key/'$serverpublic'/' wg0.conf
+ufw allow from any to any proto tcp port 22,443,1194
+ufw allow from any to any proto udp port 51820
