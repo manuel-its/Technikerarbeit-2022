@@ -18,3 +18,8 @@ chmod 755 /etc/init.d/vpnserver
 /etc/init.d/vpnserver start
 update-rc.d vpnserver defaults
 /usr/local/vpnserver/./vpncmd
+
+
+#autoexpect -f konfig.exp /usr/local/vpnserver/./vpncmd
+#expect script.exp ''
+# set serverpassword [lindex $argv 0]
