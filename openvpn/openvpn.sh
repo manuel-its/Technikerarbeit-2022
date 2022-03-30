@@ -17,5 +17,4 @@ chmod 700 vpncmd
 chmod 755 /etc/init.d/vpnserver
 /etc/init.d/vpnserver start
 update-rc.d vpnserver defaults
-cd /usr/local/vpnserver
-./vpncmd
+/usr/local/vpnserver/./vpncmd
