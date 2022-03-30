@@ -1,0 +1,116 @@
+#!/usr/bin/expect -f
+set force_conservative 0  ;# set to 1 to force conservative mode even if
+                          ;# script wasn't run conservatively originally
+if {$force_conservative} {
+        set send_slow {1 .1}
+        proc send {ignore arg} {
+                sleep .1
+                exp_send -s -- $arg
+        }
+}
+#Variablen einlesen
+set serverpassword [lindex $argv 0]
+set hubname [lindex $argv 1]
+set hubpassword [lindex $argv 2]
+
+
+set timeout -1
+spawn /usr/local/vpnserver/./vpncmd
+match_max 100000
+expect -exact "vpncmd command - SoftEther VPN Command Line Management Utility\r
+SoftEther VPN Command Line Management Utility (vpncmd command)\r
+Version 4.38 Build 9760   (English)\r
+Compiled 2021/08/17 22:32:49 by buildsan at crosswin\r
+Copyright (c) SoftEther VPN Project. All Rights Reserved.\r
+\r
+By using vpncmd program, the following can be achieved. \r
+\r
+1. Management of VPN Server or VPN Bridge \r
+2. Management of VPN Client\r
+3. Use of VPN Tools (certificate creation and Network Traffic Speed Test Tool)\r
+\r
+Select 1, 2 or 3: "
+send -- "1\r"
+expect -exact "1\r
+\r
+Specify the host name or IP address of the computer that the destination VPN Server or VPN Bridge is operating on. \r
+By specifying according to the format 'host name:port number', you can also specify the port number. \r
+(When the port number is unspecified, 443 is used.)\r
+If nothing is input and the Enter key is pressed, the connection will be made to the port number 8888 of localhost (this computer).\r
+Hostname of IP Address of Destination: "
+send -- "\r"
+expect -exact "\r
+\r
+If connecting to the server by Virtual Hub Admin Mode, please input the Virtual Hub name. \r
+If connecting by server admin mode, please press Enter without inputting anything.\r
+Specify Virtual Hub Name: "
+send -- "\r"
+expect -exact "\r
+Connection has been established with VPN Server \"localhost\" (port 443).\r
+\r
+You have administrator privileges for the entire VPN Server.\r
+\r
+VPN Server>"
+send -- "ServerPasswordSet"
+expect -exact "ServerPasswordSet"
+send -- "\r"
+expect -exact "\r
+ServerPasswordSet command - Set VPN Server Administrator Password\r
+Please enter the password. To cancel press the Ctrl+D key.\r
+\r
+Password: "
+send -- "$serverpassword"
+expect "********************"
+send -- "\r"
+expect -exact "\r
+Confirm input: "
+send -- "$serverpassword"
+expect "********************"
+send -- "\r"
+expect -exact "\r
+\r
+\r
+The command completed successfully.\r
+\r
+VPN Server>"
+send -- "HubCreate $hubname"
+#expect -exact "HubCreate "
+#send -- "vpn\r"
+expect -exact "vpn\r
+HubCreate command - Create New Virtual Hub\r
+Please enter the password. To cancel press the Ctrl+D key.\r
+\r
+Password: "
+send -- "$hubpassword"
+expect "********************"
+send -- "\r"
+expect -exact "\r
+Confirm input: "
+send -- "$hubpassword"
+expect "********************"
+send -- "\r"
+expect -exact "\r
+\r
+\r
+The command completed successfully.\r
+\r
+VPN Server>"
+send -- "Hub $hubname"
+#expect -exact "Hub "
+#send -- "vpn\r"
+expect -exact "vpn\r
+Hub command - Select Virtual Hub to Manage\r
+The Virtual Hub \"vpn\" has been selected.\r
+The command completed successfully.\r
+\r
+VPN Server/vpn>"
+send -- "SecureNatEnable"
+expect -exact "SecureNatEnable"
+send -- "\r"
+expect -exact "\r
+SecureNatEnable command - Enable the Virtual NAT and DHCP Server Function (SecureNat Function)\r
+The command completed successfully.\r
+\r
+VPN Server/vpn>"
+send -- "exit\r"
+expect eof
